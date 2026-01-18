@@ -3,110 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Movie Country Wheel - Spin for Your Movie</title>
+    <title>Global Movie Spin - Movie Night</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="movie-header">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-film"></i>
-                <h1>MOVIE COUNTRY WHEEL</h1>
-            </div>
-            <p class="subtitle">Spin the wheel & watch a movie from the selected country!</p>
-        </div>
-        <div class="film-strip">
-            <div class="film-frame">🎬</div>
-            <div class="film-frame">🌍</div>
-            <div class="film-frame">🎥</div>
-            <div class="film-frame">🎞️</div>
-            <div class="film-frame">🌟</div>
-        </div>
+
+    <header>
+        <h1>🎬 MOVIE NIGHT ROULETTE 🍿</h1>
+        <p>Spin to decide which country's cinema to explore today!</p>
     </header>
 
-    <!-- Main Content -->
-    <main class="container">
-        <div class="wheel-container">
-            <!-- Wheel Canvas -->
-            <div class="wheel-wrapper">
-                <canvas id="wheelCanvas" width="600" height="600"></canvas>
-                
-                <!-- Spin Button at Center -->
-                <button id="spinButton" class="spin-btn">
-                    <div class="spin-icon">
-                        <i class="fas fa-play"></i>
-                    </div>
-                    <span class="spin-text">SPIN NOW</span>
-                </button>
-                
-                <!-- Pointer -->
-                <div class="pointer">
-                    <i class="fas fa-caret-down"></i>
-                </div>
-            </div>
-            
-            <!-- Result Display -->
-            <div class="result-container">
-                <div class="result-card">
-                    <h3><i class="fas fa-globe-americas"></i> TODAY'S MOVIE COUNTRY</h3>
-                    <div id="resultDisplay" class="result-display">
-                        <p class="initial-message">Ready to spin? Click the button!</p>
-                    </div>
-                    <div class="instruction">
-                        <p><i class="fas fa-video"></i> Find and watch a movie from this country today!</p>
-                    </div>
-                </div>
-            </div>
+    <div class="main-container">
+        <div class="wheel-box">
+            <div class="pointer">▼</div>
+            <canvas id="wheelCanvas" width="500" height="500"></canvas>
+            <button id="spinBtn">SPIN NOW</button>
         </div>
-        
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat-box">
-                <div class="stat-icon">
-                    <i class="fas fa-flag"></i>
-                </div>
-                <div class="stat-info">
-                    <h4>COUNTRIES</h4>
-                    <p class="stat-number">195</p>
-                </div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-icon">
-                    <i class="fas fa-random"></i>
-                </div>
-                <div class="stat-info">
-                    <h4>RANDOM SPIN</h4>
-                    <p class="stat-number">100% Fair</p>
-                </div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-icon">
-                    <i class="fas fa-film"></i>
-                </div>
-                <div class="stat-info">
-                    <h4>MOVIE STYLE</h4>
-                    <p class="stat-number">Global</p>
-                </div>
-            </div>
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p class="footer-text">Made for movie lovers around the world</p>
-            <div class="creator">
-                <p>Created by 
-                    <a href="https://instagram.com/diwyankk" target="_blank" class="creator-link">
-                        <i class="fab fa-instagram"></i> @diwyankk
-                    </a>
-                </p>
+        <div id="resultContainer" class="hidden">
+            <div class="ticket">
+                <span class="ticket-header">TODAY'S DESTINATION</span>
+                <h2 id="countryName">Country Name</h2>
+                <p>Get the popcorn ready!</p>
             </div>
-            <p class="footer-note">Discover world cinema one spin at a time!</p>
         </div>
+    </div>
+
+    <footer>
+        <p>Created by <a href="https://www.instagram.com/diwyankk" target="_blank">@diwyankk</a></p>
     </footer>
 
     <script src="script.js"></script>
