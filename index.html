@@ -3,88 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Global Cinema Wheel - Movie Country Selector</title>
+    <title>🎬 Movie Country Wheel - Spin for Your Movie</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="movie-container">
-        <!-- Theater Header -->
-        <header class="theater-header">
-            <div class="screen-effect">
-                <div class="scan-line"></div>
-                <h1><i class="fas fa-film"></i> GLOBAL CINEMA WHEEL</h1>
-                <p class="tagline">Spin to discover your next international movie adventure!</p>
-                <div class="curtains">
-                    <div class="curtain left"></div>
-                    <div class="curtain right"></div>
-                </div>
+    <!-- Header Section -->
+    <header class="movie-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <h1>MOVIE COUNTRY WHEEL</h1>
             </div>
-        </header>
+            <p class="subtitle">Spin the wheel & watch a movie from the selected country!</p>
+        </div>
+        <div class="film-strip">
+            <div class="film-frame">🎬</div>
+            <div class="film-frame">🌍</div>
+            <div class="film-frame">🎥</div>
+            <div class="film-frame">🎞️</div>
+            <div class="film-frame">🌟</div>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
+    <!-- Main Content -->
+    <main class="container">
+        <div class="wheel-container">
+            <!-- Wheel Canvas -->
             <div class="wheel-wrapper">
-                <div class="container">
-                    <canvas id="wheel"></canvas>
-                    <button id="spin-btn" class="movie-btn">
-                        <i class="fas fa-play"></i> SPIN FOR MOVIE COUNTRY
-                    </button>
-                    <div class="pointer-container">
-                        <img src="https://cdn-icons-png.flaticon.com/512/66/66831.png" alt="pointer" class="pointer">
-                    </div>
-                </div>
+                <canvas id="wheelCanvas" width="600" height="600"></canvas>
                 
-                <div id="result-section">
-                    <div class="result-card">
-                        <h3><i class="fas fa-globe-americas"></i> TODAY'S MOVIE DESTINATION</h3>
-                        <div id="final-value">
-                            <p class="initial-text">Ready for cinematic adventure? Click spin!</p>
-                        </div>
-                        <div class="movie-instruction">
-                            <p><i class="fas fa-video"></i> Find a film from this country to watch today!</p>
-                        </div>
+                <!-- Spin Button at Center -->
+                <button id="spinButton" class="spin-btn">
+                    <div class="spin-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="spin-text">SPIN NOW</span>
+                </button>
+                
+                <!-- Pointer -->
+                <div class="pointer">
+                    <i class="fas fa-caret-down"></i>
+                </div>
+            </div>
+            
+            <!-- Result Display -->
+            <div class="result-container">
+                <div class="result-card">
+                    <h3><i class="fas fa-globe-americas"></i> TODAY'S MOVIE COUNTRY</h3>
+                    <div id="resultDisplay" class="result-display">
+                        <p class="initial-message">Ready to spin? Click the button!</p>
+                    </div>
+                    <div class="instruction">
+                        <p><i class="fas fa-video"></i> Find and watch a movie from this country today!</p>
                     </div>
                 </div>
             </div>
-
-            <!-- Country Counter -->
-            <div class="stats-card">
-                <div class="stat">
-                    <h4><i class="fas fa-flag"></i> TOTAL COUNTRIES</h4>
-                    <p class="count">195</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="fas fa-flag"></i>
                 </div>
-                <div class="stat">
-                    <h4><i class="fas fa-film"></i> MOVIE STYLE</h4>
-                    <p class="count">Global Cinema</p>
-                </div>
-                <div class="stat">
-                    <h4><i class="fas fa-random"></i> RANDOM SELECTION</h4>
-                    <p class="count">Every Spin</p>
+                <div class="stat-info">
+                    <h4>COUNTRIES</h4>
+                    <p class="stat-number">195</p>
                 </div>
             </div>
-        </main>
-
-        <!-- Footer with Creator Info -->
-        <footer class="theater-footer">
-            <div class="footer-content">
-                <p>Made with <i class="fas fa-heart"></i> for cinema explorers worldwide</p>
-                <div class="creator-info">
-                    <p>Created by: 
-                        <a href="https://instagram.com/diwyankk" target="_blank" class="instagram-link">
-                            <i class="fab fa-instagram"></i> @diwyankk
-                        </a>
-                    </p>
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="fas fa-random"></i>
                 </div>
-                <p class="disclaimer">Discover world cinema one country at a time!</p>
+                <div class="stat-info">
+                    <h4>RANDOM SPIN</h4>
+                    <p class="stat-number">100% Fair</p>
+                </div>
             </div>
-        </footer>
-    </div>
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <div class="stat-info">
+                    <h4>MOVIE STYLE</h4>
+                    <p class="stat-number">Global</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    <!-- Required Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">Made for movie lovers around the world</p>
+            <div class="creator">
+                <p>Created by 
+                    <a href="https://instagram.com/diwyankk" target="_blank" class="creator-link">
+                        <i class="fab fa-instagram"></i> @diwyankk
+                    </a>
+                </p>
+            </div>
+            <p class="footer-note">Discover world cinema one spin at a time!</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
