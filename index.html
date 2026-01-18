@@ -1,37 +1,685 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CINE SPIN ATLAS</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineWorld Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(218, 27, 96, 0.3);
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #b0b0d0;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #ff8a00;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background: #da1b60;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto 30px;
+        }
+
+        @media (max-width: 600px) {
+            .wheel-container {
+                width: 320px;
+                height: 320px;
+            }
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 0 8px #1a1a2e, 0 0 30px rgba(255, 138, 0, 0.5);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.21, 0.99);
+        }
+
+        .wheel-item {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .wheel-item span {
+            transform: rotate(90deg);
+            padding-left: 20px;
+            font-size: 14px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .wheel-center {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #1a1a2e;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff8a00;
+            font-size: 1.2rem;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 138, 0, 0.7);
+            border: 4px solid #da1b60;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            z-index: 20;
+        }
+
+        .pointer::before {
+            content: '▼';
+            font-size: 40px;
+            color: #da1b60;
+            text-shadow: 0 0 10px rgba(218, 27, 96, 0.8);
+        }
+
+        .result-container {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #302b63;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: #ff8a00;
+            margin-bottom: 15px;
+        }
+
+        .result-country {
+            font-size: 2.5rem;
+            color: #da1b60;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .next-step-btn {
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(218, 27, 96, 0.4);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .next-step-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(218, 27, 96, 0.6);
+        }
+
+        .next-step-btn:active {
+            transform: translateY(0);
+        }
+
+        .genre-section {
+            display: none;
+            width: 100%;
+            margin-top: 30px;
+            padding-top: 40px;
+            border-top: 2px solid #302b63;
+        }
+
+        .genre-wheel-container {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 30px;
+        }
+
+        @media (max-width: 500px) {
+            .genre-wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        .genre-item {
+            font-size: 12px;
+        }
+
+        .selected-genre {
+            font-size: 2rem;
+            color: #ff8a00;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .movie-suggestion {
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #302b63;
+            display: none;
+        }
+
+        .movie-title {
+            font-size: 2.2rem;
+            color: #da1b60;
+            margin-bottom: 10px;
+        }
+
+        .movie-details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .movie-detail {
+            background: rgba(48, 43, 99, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        .restart-btn {
+            background: transparent;
+            border: 2px solid #ff8a00;
+            color: #ff8a00;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: rgba(255, 138, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #b0b0d0;
+            border-top: 1px solid #302b63;
+        }
+
+        .creator {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .creator a {
+            color: #ff8a00;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .creator a:hover {
+            color: #da1b60;
+            text-decoration: underline;
+        }
+
+        .instructions {
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        .loading {
+            font-size: 1.5rem;
+            color: #ff8a00;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 138, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff8a00;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-film"></i> CineWorld Explorer</h1>
+            <p class="tagline">Discover films from around the globe, one spin at a time</p>
+        </header>
 
-  <header>
-    <h1>CINE SPIN ATLAS</h1>
-    <p>One country. One genre. One day.</p>
-  </header>
+        <div class="instructions">
+            <p><strong>How it works:</strong> The wheel will automatically spin and select a random country. Then you can choose a genre to get a movie recommendation from that country. Each day you'll get a unique combination!</p>
+        </div>
 
-  <!-- COUNTRY WHEEL -->
-  <section class="wheel-section">
-    <h2>Spin for Country</h2>
-    <canvas id="countryWheel" width="400" height="400"></canvas>
-    <button id="spinCountry">SPIN COUNTRY</button>
-    <div id="countryResult"></div>
-  </section>
+        <main class="main-content">
+            <section class="country-section">
+                <h2 class="section-title">Step 1: Spin for a Country</h2>
+                <p class="tagline">Today's movie will be from this country</p>
+                
+                <div class="wheel-container">
+                    <div class="pointer"></div>
+                    <div class="wheel" id="countryWheel"></div>
+                    <div class="wheel-center">SPIN</div>
+                </div>
 
-  <!-- GENRE SECTION -->
-  <section id="genreSection" class="wheel-section hidden">
-    <h2>Select Movie Zone</h2>
-    <canvas id="genreWheel" width="400" height="400"></canvas>
-    <button id="spinGenre">SPIN GENRE</button>
-    <div id="genreResult"></div>
-  </section>
+                <div class="loading" id="countryLoading">
+                    <div class="spinner"></div> Selecting your country...
+                </div>
 
-  <footer>
-    <a href="https://www.instagram.com/diwyankk" target="_blank">@diwyankk</a>
-  </footer>
+                <div class="result-container" id="countryResult">
+                    <h3 class="result-title">Your Movie Destination:</h3>
+                    <div class="result-country" id="selectedCountry">United States</div>
+                    <p>Now select the genre for your movie recommendation</p>
+                    <button class="next-step-btn" id="genreStepBtn">
+                        Choose Movie Genre <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
+            </section>
 
-  <script src="script.js"></script>
+            <section class="genre-section" id="genreSection">
+                <h2 class="section-title">Step 2: Pick a Genre</h2>
+                <p class="tagline">What kind of movie are you in the mood for?</p>
+                
+                <div class="wheel-container genre-wheel-container">
+                    <div class="pointer"></div>
+                    <div class="wheel" id="genreWheel"></div>
+                    <div class="wheel-center">GENRE</div>
+                </div>
+
+                <div class="loading" id="genreLoading">
+                    <div class="spinner"></div> Finding your movie...
+                </div>
+
+                <div class="result-container">
+                    <h3 class="result-title">Selected Genre:</h3>
+                    <div class="selected-genre" id="selectedGenre">Action</div>
+                    <button class="next-step-btn" id="showMovieBtn">
+                        Show My Movie <i class="fas fa-ticket-alt"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section class="movie-suggestion" id="movieSuggestion">
+                <h2 class="result-title">Your Movie Recommendation</h2>
+                <div class="movie-title" id="movieTitle">Movie Title</div>
+                <div class="movie-details">
+                    <div class="movie-detail"><strong>Country:</strong> <span id="movieCountry">Country</span></div>
+                    <div class="movie-detail"><strong>Genre:</strong> <span id="movieGenre">Genre</span></div>
+                    <div class="movie-detail"><strong>Year:</strong> <span id="movieYear">Year</span></div>
+                    <div class="movie-detail"><strong>Rating:</strong> <span id="movieRating">Rating</span></div>
+                </div>
+                <p id="movieDescription">Movie description will appear here...</p>
+                <button class="restart-btn" id="restartBtn">
+                    <i class="fas fa-redo"></i> Try Another Combination
+                </button>
+            </section>
+        </main>
+
+        <footer>
+            <p>Explore world cinema one spin at a time</p>
+            <p class="creator">
+                Created by <a href="https://instagram.com/diwyankk" target="_blank">@diwyankk</a> 
+                <i class="fab fa-instagram"></i>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample data - in a real app, you would have more comprehensive data
+        const countries = [
+            "United States", "India", "France", "Japan", "South Korea", 
+            "United Kingdom", "Germany", "Italy", "Spain", "Brazil",
+            "Mexico", "Australia", "Canada", "Russia", "China",
+            "Nigeria", "Egypt", "Turkey", "Iran", "Indonesia",
+            "Sweden", "Denmark", "Norway", "Poland", "Argentina"
+        ];
+
+        const genres = [
+            "Action", "Adventure", "Animation", "Biography", "Comedy",
+            "Crime", "Drama", "Fantasy", "Historical", "Horror",
+            "Mystery", "Romance", "Sci-Fi", "Thriller", "War",
+            "Musical", "Western", "Noir", "Documentary", "Family"
+        ];
+
+        // Movie database by country and genre
+        const movieDatabase = {
+            "United States": {
+                "Action": { title: "The Dark Knight", year: "2008", rating: "9.0/10", description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice." },
+                "Drama": { title: "The Shawshank Redemption", year: "1994", rating: "9.3/10", description: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency." },
+                "Sci-Fi": { title: "Inception", year: "2010", rating: "8.8/10", description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O." }
+            },
+            "India": {
+                "Drama": { title: "3 Idiots", year: "2009", rating: "8.4/10", description: "Two friends are searching for their long lost companion. They revisit their college days and recall the memories of their friend who inspired them to think differently, even as the rest of the world called them 'idiots'." },
+                "Action": { title: "Baahubali: The Beginning", year: "2015", rating: "8.0/10", description: "In ancient India, an adventurous and daring man becomes involved in a decades-old feud between two warring peoples." },
+                "Romance": { title: "Dilwale Dulhania Le Jayenge", year: "1995", rating: "8.1/10", description: "When Raj meets Simran in Europe, it isn't love at first sight but when Simran moves to India for an arranged marriage, love makes its presence felt." }
+            },
+            "Japan": {
+                "Animation": { title: "Spirited Away", year: "2001", rating: "8.6/10", description: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts." },
+                "Drama": { title: "Seven Samurai", year: "1954", rating: "8.6/10", description: "Farmers from a village exploited by bandits hire a veteran samurai for protection, who gathers six other samurai to join him." },
+                "Horror": { title: "Ringu", year: "1998", rating: "7.2/10", description: "A reporter and her ex-husband investigate a cursed video tape that is rumored to kill the viewer seven days after watching it." }
+            },
+            "France": {
+                "Drama": { title: "Amélie", year: "2001", rating: "8.3/10", description: "Amélie is an innocent and naive girl in Paris with her own sense of justice. She decides to help those around her and, along the way, discovers love." },
+                "Romance": { title: "Blue Is the Warmest Colour", year: "2013", rating: "7.7/10", description: "Adèle's life is changed when she meets Emma, a young woman with blue hair, who will allow her to discover desire and to assert herself as a woman and as an adult." },
+                "Comedy": { title: "The Intouchables", year: "2011", rating: "8.5/10", description: "After he becomes a quadriplegic from a paragliding accident, an aristocrat hires a young man from the projects to be his caregiver." }
+            }
+        };
+
+        // Fallback movies if country/genre combination not found
+        const fallbackMovies = [
+            { title: "Parasite", country: "South Korea", genre: "Thriller", year: "2019", rating: "8.6/10", description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan." },
+            { title: "City of God", country: "Brazil", genre: "Crime", year: "2002", rating: "8.6/10", description: "In the slums of Rio, two kids' paths diverge as one struggles to become a photographer and the other a kingpin." },
+            { title: "Life Is Beautiful", country: "Italy", genre: "Drama", year: "1997", rating: "8.6/10", description: "When an open-minded Jewish librarian and his son become victims of the Holocaust, he uses a perfect mixture of will, humor, and imagination to protect his son from the dangers around their camp." }
+        ];
+
+        // DOM elements
+        const countryWheel = document.getElementById('countryWheel');
+        const genreWheel = document.getElementById('genreWheel');
+        const countryResult = document.getElementById('countryResult');
+        const countryLoading = document.getElementById('countryLoading');
+        const selectedCountry = document.getElementById('selectedCountry');
+        const genreStepBtn = document.getElementById('genreStepBtn');
+        const genreSection = document.getElementById('genreSection');
+        const selectedGenre = document.getElementById('selectedGenre');
+        const showMovieBtn = document.getElementById('showMovieBtn');
+        const movieSuggestion = document.getElementById('movieSuggestion');
+        const movieTitle = document.getElementById('movieTitle');
+        const movieCountry = document.getElementById('movieCountry');
+        const movieGenre = document.getElementById('movieGenre');
+        const movieYear = document.getElementById('movieYear');
+        const movieRating = document.getElementById('movieRating');
+        const movieDescription = document.getElementById('movieDescription');
+        const restartBtn = document.getElementById('restartBtn');
+        const genreLoading = document.getElementById('genreLoading');
+
+        // Selected values
+        let currentCountry = null;
+        let currentGenre = null;
+
+        // Initialize wheels
+        function initializeWheel(wheelElement, items, isGenre = false) {
+            wheelElement.innerHTML = '';
+            const totalItems = items.length;
+            const angle = 360 / totalItems;
+            
+            // Create color palette
+            const colors = isGenre 
+                ? ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2', '#EF476F', '#073B4C']
+                : ['#1A535C', '#4ECDC4', '#FFE66D', '#FF6B6B', '#6A0572', '#3D348B', '#FF9A00'];
+            
+            for (let i = 0; i < totalItems; i++) {
+                const item = document.createElement('div');
+                item.className = `wheel-item ${isGenre ? 'genre-item' : ''}`;
+                item.style.transform = `rotate(${i * angle}deg)`;
+                item.style.backgroundColor = colors[i % colors.length];
+                
+                const span = document.createElement('span');
+                span.textContent = items[i];
+                item.appendChild(span);
+                
+                wheelElement.appendChild(item);
+            }
+        }
+
+        // Spin wheel function
+        function spinWheel(wheelElement, items, resultCallback, isGenre = false) {
+            const totalItems = items.length;
+            // Randomly select an item
+            const selectedIndex = Math.floor(Math.random() * totalItems);
+            // Calculate rotation (multiple full rotations plus offset to position selected item at top)
+            const fullRotations = 5;
+            const rotation = 360 * fullRotations + (360 - (selectedIndex * (360 / totalItems)));
+            
+            // Apply rotation with transition
+            wheelElement.style.transform = `rotate(${rotation}deg)`;
+            
+            // After spinning, return the selected item
+            setTimeout(() => {
+                resultCallback(items[selectedIndex]);
+            }, isGenre ? 3000 : 5000);
+        }
+
+        // Initialize country wheel
+        initializeWheel(countryWheel, countries);
+
+        // Start country spin automatically after a short delay
+        setTimeout(() => {
+            countryLoading.style.display = 'block';
+            spinWheel(countryWheel, countries, (country) => {
+                currentCountry = country;
+                selectedCountry.textContent = country;
+                countryLoading.style.display = 'none';
+                countryResult.style.display = 'block';
+                
+                // Scroll to results smoothly
+                countryResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }, 1000);
+
+        // Genre step button click handler
+        genreStepBtn.addEventListener('click', () => {
+            genreSection.style.display = 'block';
+            genreSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Initialize genre wheel after a short delay
+            setTimeout(() => {
+                initializeWheel(genreWheel, genres, true);
+            }, 300);
+        });
+
+        // Show movie button click handler
+        showMovieBtn.addEventListener('click', () => {
+            // Get random genre
+            spinWheel(genreWheel, genres, (genre) => {
+                currentGenre = genre;
+                selectedGenre.textContent = genre;
+                
+                // Show loading
+                genreLoading.style.display = 'block';
+                
+                // Find movie recommendation
+                setTimeout(() => {
+                    genreLoading.style.display = 'none';
+                    
+                    let movie = null;
+                    
+                    // Try to find movie in database
+                    if (movieDatabase[currentCountry] && movieDatabase[currentCountry][currentGenre]) {
+                        movie = movieDatabase[currentCountry][currentGenre];
+                    } else {
+                        // Fallback to random movie
+                        const randomIndex = Math.floor(Math.random() * fallbackMovies.length);
+                        movie = fallbackMovies[randomIndex];
+                        // Override country and genre with fallback values
+                        currentCountry = movie.country;
+                        currentGenre = movie.genre;
+                        selectedCountry.textContent = currentCountry;
+                        selectedGenre.textContent = currentGenre;
+                    }
+                    
+                    // Display movie suggestion
+                    movieTitle.textContent = movie.title;
+                    movieCountry.textContent = currentCountry;
+                    movieGenre.textContent = currentGenre;
+                    movieYear.textContent = movie.year;
+                    movieRating.textContent = movie.rating;
+                    movieDescription.textContent = movie.description;
+                    
+                    movieSuggestion.style.display = 'block';
+                    movieSuggestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 2000);
+            }, true);
+        });
+
+        // Restart button click handler
+        restartBtn.addEventListener('click', () => {
+            // Reset the experience
+            currentCountry = null;
+            currentGenre = null;
+            
+            // Hide sections
+            countryResult.style.display = 'none';
+            genreSection.style.display = 'none';
+            movieSuggestion.style.display = 'none';
+            
+            // Reset wheel rotation
+            countryWheel.style.transform = 'rotate(0deg)';
+            genreWheel.style.transform = 'rotate(0deg)';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Start new spin after a delay
+            setTimeout(() => {
+                countryLoading.style.display = 'block';
+                spinWheel(countryWheel, countries, (country) => {
+                    currentCountry = country;
+                    selectedCountry.textContent = country;
+                    countryLoading.style.display = 'none';
+                    countryResult.style.display = 'block';
+                    
+                    // Scroll to results smoothly
+                    countryResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 1000);
+        });
+
+        // Ensure unique results by tracking used combinations (simplified for demo)
+        let usedCombinations = [];
+        
+        // Function to ensure unique result (simplified for this demo)
+        function getUniqueCombination(countryList, genreList) {
+            // In a full implementation, you would track combinations across sessions
+            // For this demo, we'll just randomize
+            const countryIndex = Math.floor(Math.random() * countryList.length);
+            const genreIndex = Math.floor(Math.random() * genreList.length);
+            
+            return {
+                country: countryList[countryIndex],
+                genre: genreList[genreIndex]
+            };
+        }
+    </script>
 </body>
-</html>
+                      </html>
