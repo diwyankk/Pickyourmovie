@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Movie Spin - Movie Night</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>CINE SPIN ATLAS</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>🎬 MOVIE NIGHT ROULETTE 🍿</h1>
-        <p>Spin to decide which country's cinema to explore today!</p>
-    </header>
+  <header>
+    <h1>CINE SPIN ATLAS</h1>
+    <p>One country. One genre. One day.</p>
+  </header>
 
-    <div class="main-container">
-        <div class="wheel-box">
-            <div class="pointer">▼</div>
-            <canvas id="wheelCanvas" width="500" height="500"></canvas>
-            <button id="spinBtn">SPIN NOW</button>
-        </div>
+  <!-- COUNTRY WHEEL -->
+  <section class="wheel-section">
+    <h2>Spin for Country</h2>
+    <canvas id="countryWheel" width="400" height="400"></canvas>
+    <button id="spinCountry">SPIN COUNTRY</button>
+    <div id="countryResult"></div>
+  </section>
 
-        <div id="resultContainer" class="hidden">
-            <div class="ticket">
-                <span class="ticket-header">TODAY'S DESTINATION</span>
-                <h2 id="countryName">Country Name</h2>
-                <p>Get the popcorn ready!</p>
-            </div>
-        </div>
-    </div>
+  <!-- GENRE SECTION -->
+  <section id="genreSection" class="wheel-section hidden">
+    <h2>Select Movie Zone</h2>
+    <canvas id="genreWheel" width="400" height="400"></canvas>
+    <button id="spinGenre">SPIN GENRE</button>
+    <div id="genreResult"></div>
+  </section>
 
-    <footer>
-        <p>Created by <a href="https://www.instagram.com/diwyankk" target="_blank">@diwyankk</a></p>
-    </footer>
+  <footer>
+    <a href="https://www.instagram.com/diwyankk" target="_blank">@diwyankk</a>
+  </footer>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
