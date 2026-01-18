@@ -1,110 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;600&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
 body {
-    background-color: #0c0c0c;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+  background: radial-gradient(circle at top, #111, #000);
+  color: #f5f5f5;
+  text-align: center;
 }
 
 header {
-    text-align: center;
-    padding: 30px;
-    background: linear-gradient(to bottom, #1a1a1a, transparent);
-    width: 100%;
+  padding: 30px 10px;
 }
 
 header h1 {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 3.5rem;
-    color: #e50914; /* Netflix Red */
-    letter-spacing: 3px;
-    margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  color: #e50914;
 }
 
-.main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    padding: 20px;
+header p {
+  color: #aaa;
+  margin-top: 8px;
 }
 
-.wheel-box {
-    position: relative;
+.wheel-section {
+  margin: 50px auto;
 }
 
-.pointer {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-    color: #ffcc00;
-    z-index: 10;
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+canvas {
+  margin: 20px auto;
+  display: block;
 }
 
-#wheelCanvas {
-    max-width: 90vw;
-    border-radius: 50%;
-    box-shadow: 0 0 50px rgba(229, 9, 20, 0.3);
-    border: 10px solid #222;
+button {
+  background: #e50914;
+  border: none;
+  padding: 12px 28px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-#spinBtn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: none;
-    background: #e50914;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    transition: 0.3s;
-    font-family: 'Bebas Neue';
-    font-size: 1.2rem;
+button:hover {
+  background: #b20710;
 }
 
-#spinBtn:hover {
-    background: #ff0a16;
-    transform: translate(-50%, -50%) scale(1.1);
+#countryResult,
+#genreResult {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #00ffcc;
 }
 
-/* Ticket Animation */
-.hidden { display: none; }
-
-.ticket {
-    background: #ffcc00;
-    color: black;
-    padding: 20px 40px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    border: 3px dashed black;
-    animation: fadeIn 1s ease-in-out;
+.hidden {
+  display: none;
 }
-
-.ticket-header { font-size: 0.8rem; letter-spacing: 2px; font-weight: bold; }
-.ticket h2 { font-family: 'Bebas Neue'; font-size: 3rem; margin: 10px 0; }
 
 footer {
-    margin-top: auto;
-    padding: 20px;
+  margin: 60px 0 30px;
 }
 
-footer a { color: #e50914; text-decoration: none; font-weight: bold; }
+footer a {
+  color: #888;
+  text-decoration: none;
+}
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+footer a:hover {
+  color: #fff;
 }
