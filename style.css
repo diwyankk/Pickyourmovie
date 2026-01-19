@@ -130,31 +130,35 @@ body {
     font-size: 0.9rem;
 }
 
-/* Wheel Wrapper - FIXED */
+/* PERFECT CIRCULAR WHEEL */
 .wheel-wrapper {
     position: relative;
     width: 100%;
-    max-width: 300px;
-    height: 300px;
+    max-width: 320px;
+    height: 320px;
     margin: 0 auto;
 }
 
-.wheel {
+.wheel-circle {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    border: 8px solid #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border: 10px solid white;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    background: #f8f9fa;
 }
 
 .wheel-inner {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    position: relative;
-    transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+    transform: rotate(0deg);
 }
 
 .wheel-segment {
@@ -168,19 +172,21 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
-.wheel-segment-content {
+.segment-content {
     position: absolute;
-    left: 30px;
-    top: 15px;
+    left: 40px;
+    top: 20px;
     transform: rotate(45deg);
     text-align: center;
-    width: 100px;
+    width: 90px;
     font-weight: 600;
     font-size: 11px;
     color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    white-space: nowrap;
 }
 
 .spin-center {
@@ -188,7 +194,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: 20;
 }
 
 .spin-btn {
@@ -206,6 +212,7 @@ body {
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     transition: all 0.3s ease;
     white-space: nowrap;
+    z-index: 30;
 }
 
 .spin-btn:hover:not(:disabled) {
@@ -224,10 +231,11 @@ body {
     top: -15px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 40px;
+    font-size: 45px;
     color: #e74c3c;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 25;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
 }
 
 /* Wheel Result */
@@ -260,6 +268,7 @@ body {
 
 .selected-result {
     padding: 10px;
+    width: 100%;
 }
 
 .selected-result h3 {
@@ -503,7 +512,7 @@ body {
 @media (max-width: 1100px) {
     .wheels-section {
         grid-template-columns: 1fr;
-        max-width: 500px;
+        max-width: 400px;
         margin-left: auto;
         margin-right: auto;
     }
