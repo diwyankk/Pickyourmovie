@@ -1,15 +1,15 @@
-// Data: All 195 countries (simplified for wheel display)
+// Data: 50 Popular Countries for Movies
 const countries = [
-    "USA", "India", "UK", "Japan", "France", 
-    "Germany", "Italy", "Spain", "China", "Brazil",
-    "Mexico", "Russia", "Canada", "Australia", "Korea",
+    "United States", "India", "United Kingdom", "Japan", "France",
+    "Germany", "Italy", "Spain", "China", "South Korea",
+    "Brazil", "Mexico", "Russia", "Canada", "Australia",
     "Nigeria", "Egypt", "Turkey", "Iran", "Indonesia",
     "Pakistan", "Bangladesh", "Philippines", "Vietnam", "Thailand",
     "Poland", "Ukraine", "Netherlands", "Belgium", "Sweden",
-    "Portugal", "Greece", "Czech", "Hungary", "Austria",
+    "Portugal", "Greece", "Czech Republic", "Hungary", "Austria",
     "Switzerland", "Denmark", "Finland", "Norway", "Ireland",
     "Argentina", "Chile", "Colombia", "Peru", "Venezuela",
-    "Malaysia", "Singapore", "Israel", "UAE", "Saudi Arabia"
+    "Malaysia", "Singapore", "Israel", "UAE", "South Africa"
 ];
 
 // Data: Movie Genres
@@ -18,7 +18,7 @@ const genres = [
     "Sci-Fi", "Romance", "Thriller", "Animation", "Fantasy",
     "Crime", "Mystery", "Documentary", "Family", "Musical",
     "War", "Western", "Biography", "History", "Sport",
-    "Superhero", "Noir", "Psychological", "Musical"
+    "Superhero", "Noir", "Psychological", "Romantic Comedy"
 ];
 
 // DOM Elements
@@ -43,21 +43,29 @@ let isGenreSpinning = false;
 // Colors for wheels
 const countryColors = [
     '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2',
-    '#EF476F', '#7B68EE', '#FFA500', '#32CD32', '#1E90FF'
+    '#EF476F', '#7B68EE', '#FFA500', '#32CD32', '#1E90FF',
+    '#8A2BE2', '#FF69B4', '#00CED1', '#FF8C00', '#9ACD32'
 ];
 
 const genreColors = [
     '#E74C3C', '#3498DB', '#2ECC71', '#F39C12', '#9B59B6',
-    '#1ABC9C', '#D35400', '#34495E', '#16A085', '#8E44AD'
+    '#1ABC9C', '#D35400', '#34495E', '#16A085', '#8E44AD',
+    '#2C3E50', '#27AE60', '#2980B9', '#F1C40F', '#E67E22'
 ];
 
-// Initialize wheels
+// Initialize wheels when page loads
+window.addEventListener('load', () => {
+    initializeWheels();
+    console.log('Movie Explorer Wheel initialized!');
+    console.log(`Countries: ${countries.length}, Genres: ${genres.length}`);
+});
+
+// Create wheel segments
 function initializeWheels() {
     createWheel(countryWheelInner, countries, countryColors);
     createWheel(genreWheelInner, genres, genreColors);
 }
 
-// Create wheel segments
 function createWheel(wheelElement, items, colors) {
     wheelElement.innerHTML = '';
     const total = items.length;
@@ -70,15 +78,16 @@ function createWheel(wheelElement, items, colors) {
         segment.style.backgroundColor = colors[i % colors.length];
         
         const content = document.createElement('div');
-        content.className = 'wheel-segment-content';
+        content.className = 'segment-content';
         
-        // Shorten text if needed
+        // Shorten text for better display
         let text = items[i];
-        if (text.length > 8) {
-            text = text.substring(0, 6) + '..';
+        if (text.length > 12) {
+            text = text.substring(0, 10) + '..';
         }
         
         content.textContent = text;
+        content.style.transform = `rotate(${angle/2}deg)`;
         segment.appendChild(content);
         wheelElement.appendChild(segment);
     }
@@ -111,11 +120,11 @@ function spinWheel(type, duration = 4000) {
         resultElement.innerHTML = `
             <div class="spinning-message">
                 <i class="fas fa-spinner spinning-icon"></i>
-                <p>Spinning...</p>
+                <p>Spinning the wheel...</p>
             </div>
         `;
         
-        // Generate random rotation
+        // Generate random rotation (5-8 full rotations + random)
         const minRotations = 5;
         const maxRotations = 8;
         const rotations = minRotations + Math.random() * (maxRotations - minRotations);
@@ -133,13 +142,15 @@ function spinWheel(type, duration = 4000) {
         const selectedIndex = Math.floor(effectiveAngle / segmentAngle) % total;
         const selectedItem = items[selectedIndex];
         
+        console.log(`${type} selected: ${selectedItem} (Index: ${selectedIndex})`);
+        
         // Finish after duration
         setTimeout(() => {
-            // Show result
+            // Show result with celebration
             resultElement.innerHTML = `
                 <div class="selected-result">
                     <h3>${selectedItem}</h3>
-                    <p>${type === 'country' ? '🎌 Country Selected' : '🎬 Genre Selected'}</p>
+                    <p>${type === 'country' ? '🎌 Movie Country Selected' : '🎬 Movie Genre Selected'}</p>
                 </div>
             `;
             
@@ -187,17 +198,15 @@ function updateSearchButton() {
     if (currentCountry && currentGenre) {
         searchMoviesBtn.disabled = false;
         searchInfo.innerHTML = `
-            <p><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Ready to search for <strong>${currentGenre}</strong> movies from <strong>${currentCountry}</strong></p>
+            <p><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Ready! Search for <strong>${currentGenre}</strong> movies from <strong>${currentCountry}</strong></p>
         `;
-    } else {
-        searchMoviesBtn.disabled = true;
     }
 }
 
-// Google Search Function
+// Google Search Function - WITHOUT YEAR
 function searchGoogleMovies(country, genre) {
-    // Create search query
-    const query = `${genre} movies from ${country} 2023 2024 best films`;
+    // Create search query WITHOUT year
+    const query = `${genre} movies from ${country} films`;
     const encodedQuery = encodeURIComponent(query);
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
     
@@ -226,6 +235,9 @@ spinBothBtn.addEventListener('click', async () => {
         spinGenreBtn.disabled = true;
         spinBothBtn.disabled = true;
         
+        // Show message
+        searchInfo.innerHTML = `<p><i class="fas fa-sync-alt spinning-icon"></i> Spinning both wheels...</p>`;
+        
         // Spin both wheels simultaneously
         await Promise.all([
             spinWheel('country', 4000),
@@ -241,32 +253,6 @@ searchMoviesBtn.addEventListener('click', () => {
     if (currentCountry && currentGenre) {
         searchGoogleMovies(currentCountry, currentGenre);
     }
-});
-
-// Initialize when page loads
-window.addEventListener('load', () => {
-    initializeWheels();
-    
-    // Add CSS for spinning message
-    const style = document.createElement('style');
-    style.textContent = `
-        .spinning-message {
-            text-align: center;
-            color: #667eea;
-        }
-        .spinning-message i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .spinning-message p {
-            font-size: 1rem;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    console.log('Movie Explorer Wheel initialized!');
-    console.log(`Countries: ${countries.length}, Genres: ${genres.length}`);
 });
 
 // Make responsive on window resize
