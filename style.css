@@ -11,6 +11,7 @@ body {
     color: #333;
     min-height: 100vh;
     line-height: 1.6;
+    padding-bottom: 20px;
 }
 
 .container {
@@ -129,17 +130,26 @@ body {
     font-size: 0.9rem;
 }
 
-/* Wheel Wrapper */
+/* Wheel Wrapper - RESPONSIVE FIX */
 .wheel-wrapper {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    max-width: 400px;
     margin: 0 auto;
 }
 
-canvas {
-    width: 100%;
-    height: 100%;
+.wheel-wrapper::before {
+    content: '';
+    display: block;
+    padding-top: 100%; /* Makes it square */
+}
+
+.wheel-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
     border-radius: 50%;
     border: 8px solid #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -150,6 +160,7 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
 .spin-btn {
@@ -166,6 +177,7 @@ canvas {
     gap: 8px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .spin-btn:hover:not(:disabled) {
@@ -275,6 +287,9 @@ canvas {
     background: white;
     border-radius: 8px;
     border-left: 4px solid #667eea;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 /* Action Buttons */
@@ -283,6 +298,7 @@ canvas {
     gap: 1rem;
     justify-content: center;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -297,6 +313,7 @@ canvas {
     justify-content: center;
     gap: 10px;
     transition: all 0.3s ease;
+    min-width: 200px;
 }
 
 .primary-btn {
@@ -418,33 +435,41 @@ canvas {
     background: rgba(102, 126, 234, 0.2);
 }
 
-/* Animations */
-@keyframes celebrate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+/* Animation Classes */
+.spinning {
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .celebrate {
     animation: celebrate 0.5s ease;
 }
 
-/* Responsive Design */
-@media (max-width: 900px) {
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* FIXED RESPONSIVE DESIGN */
+@media (max-width: 1100px) {
     .wheels-section {
         grid-template-columns: 1fr;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .wheel-wrapper {
-        width: 350px;
-        height: 350px;
+        max-width: 350px;
     }
-    
-    canvas {
-        width: 350px;
-        height: 350px;
-    }
-    
+}
+
+@media (max-width: 768px) {
     .header .container {
         flex-direction: column;
         text-align: center;
@@ -454,15 +479,29 @@ canvas {
         margin-top: 1rem;
         text-align: center;
     }
-}
-
-@media (max-width: 768px) {
+    
+    .logo-section h1 {
+        font-size: 1.8rem;
+    }
+    
     .action-buttons {
         flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-btn {
+        width: 100%;
+        max-width: 300px;
     }
     
     .steps {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
     }
     
     .logo-section h1 {
@@ -472,17 +511,13 @@ canvas {
     .tagline {
         font-size: 0.9rem;
     }
-}
-
-@media (max-width: 480px) {
-    .wheel-wrapper {
-        width: 300px;
-        height: 300px;
+    
+    .wheel-container {
+        padding: 1rem;
     }
     
-    canvas {
-        width: 300px;
-        height: 300px;
+    .wheel-header h2 {
+        font-size: 1.3rem;
     }
     
     .spin-btn {
@@ -490,12 +525,26 @@ canvas {
         font-size: 0.9rem;
     }
     
-    .action-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
+    .result-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .selection-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .label {
+        width: 100%;
+        margin-bottom: 5px;
     }
     
     .value {
+        width: 100%;
         font-size: 1.2rem;
+    }
+    
+    .wheel-wrapper {
+        max-width: 300px;
     }
 }
