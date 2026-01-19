@@ -118,61 +118,52 @@
                                 <p>Movies of this genre will be recommended</p>
                             </div>
                         </div>
-                        <button class="next-step-btn" id="showMovieBtn">
-                            Show My Movie <i class="fas fa-ticket-alt"></i>
+                        <button class="next-step-btn" id="showSearchBtn">
+                            Search Your Combination <i class="fab fa-google"></i>
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- Step 3: Movie Recommendation -->
-            <section class="step-section" id="movieStep">
+            <!-- Step 3: Google Search -->
+            <section class="step-section" id="searchStep">
                 <div class="step-header">
                     <div class="step-number">3</div>
-                    <h2>Your Movie Recommendation</h2>
+                    <h2>Search Your Movie Combination</h2>
                 </div>
                 
-                <div class="movie-recommendation">
-                    <div class="movie-poster">
-                        <div class="poster-placeholder">
-                            <i class="fas fa-film"></i>
+                <div class="search-recommendation">
+                    <div class="search-summary">
+                        <h3>Your Selection:</h3>
+                        <div class="selection-details">
+                            <div class="selection-item">
+                                <span class="selection-label">Country:</span>
+                                <span class="selection-value" id="displayCountry">United States</span>
+                            </div>
+                            <div class="selection-item">
+                                <span class="selection-label">Genre:</span>
+                                <span class="selection-value" id="displayGenre">Action</span>
+                            </div>
+                            <div class="selection-item full-width">
+                                <span class="selection-label">Search Query:</span>
+                                <span class="selection-value query" id="searchQuery">United States Action movies</span>
+                            </div>
+                        </div>
+                        
+                        <div class="search-explanation">
+                            <p><i class="fas fa-lightbulb"></i> We'll search Google for <strong id="searchQueryText">United States Action movies</strong> to find recommendations for you.</p>
                         </div>
                     </div>
                     
-                    <div class="movie-details">
-                        <h3 id="movieTitle">The Dark Knight</h3>
+                    <div class="search-actions">
+                        <a href="#" class="google-search-btn" target="_blank" id="googleSearchBtn">
+                            <i class="fab fa-google"></i> Search on Google
+                        </a>
+                        <p class="search-note">Click to open Google search in a new tab</p>
                         
-                        <div class="movie-info">
-                            <div class="info-item">
-                                <span class="info-label">Country:</span>
-                                <span class="info-value" id="movieCountry">United States</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Genre:</span>
-                                <span class="info-value" id="movieGenre">Action</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Year:</span>
-                                <span class="info-value" id="movieYear">2008</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Rating:</span>
-                                <span class="info-value" id="movieRating">9.0/10</span>
-                            </div>
-                        </div>
-                        
-                        <div class="movie-description">
-                            <p id="movieDescription">When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</p>
-                        </div>
-                        
-                        <div class="movie-actions">
-                            <button class="restart-btn" id="restartBtn">
-                                <i class="fas fa-redo"></i> Try Another Combination
-                            </button>
-                            <a href="#" class="stream-btn" target="_blank">
-                                <i class="fas fa-play-circle"></i> Where to Watch
-                            </a>
-                        </div>
+                        <button class="restart-btn" id="restartBtn">
+                            <i class="fas fa-redo"></i> Try Another Combination
+                        </button>
                     </div>
                 </div>
             </section>
