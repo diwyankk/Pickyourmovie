@@ -90,7 +90,7 @@ body {
 /* Wheels Section */
 .wheels-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
     margin-bottom: 2rem;
 }
@@ -130,29 +130,57 @@ body {
     font-size: 0.9rem;
 }
 
-/* Wheel Wrapper - RESPONSIVE FIX */
+/* Wheel Wrapper - FIXED */
 .wheel-wrapper {
     position: relative;
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
+    height: 300px;
     margin: 0 auto;
 }
 
-.wheel-wrapper::before {
-    content: '';
-    display: block;
-    padding-top: 100%; /* Makes it square */
-}
-
-.wheel-wrapper canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
+.wheel {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
+    position: relative;
+    overflow: hidden;
     border: 8px solid #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.wheel-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.wheel-segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    transform-origin: 100% 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.wheel-segment-content {
+    position: absolute;
+    left: 30px;
+    top: 15px;
+    transform: rotate(45deg);
+    text-align: center;
+    width: 100px;
+    font-weight: 600;
+    font-size: 11px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .spin-center {
@@ -193,7 +221,7 @@ body {
 
 .wheel-pointer {
     position: absolute;
-    top: -10px;
+    top: -15px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 40px;
@@ -212,10 +240,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .result-placeholder {
-    text-align: center;
     color: #95a5a6;
 }
 
@@ -223,9 +251,25 @@ body {
     font-size: 2rem;
     margin-bottom: 10px;
     color: #bdc3c7;
+    display: block;
 }
 
 .result-placeholder p {
+    font-size: 0.9rem;
+}
+
+.selected-result {
+    padding: 10px;
+}
+
+.selected-result h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.selected-result p {
+    color: #7f8c8d;
     font-size: 0.9rem;
 }
 
@@ -436,8 +480,8 @@ body {
 }
 
 /* Animation Classes */
-.spinning {
-    animation: spin 0.5s linear infinite;
+.spinning-icon {
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -459,13 +503,9 @@ body {
 @media (max-width: 1100px) {
     .wheels-section {
         grid-template-columns: 1fr;
-        max-width: 600px;
+        max-width: 500px;
         margin-left: auto;
         margin-right: auto;
-    }
-    
-    .wheel-wrapper {
-        max-width: 350px;
     }
 }
 
@@ -496,6 +536,11 @@ body {
     
     .steps {
         grid-template-columns: 1fr;
+    }
+    
+    .wheel-wrapper {
+        max-width: 280px;
+        height: 280px;
     }
 }
 
@@ -545,6 +590,7 @@ body {
     }
     
     .wheel-wrapper {
-        max-width: 300px;
+        max-width: 250px;
+        height: 250px;
     }
-}
+    }
