@@ -1,347 +1,351 @@
-// Movie Picker Application
-document.addEventListener('DOMContentLoaded', function() {
-    // Countries with flags and colors for wheel
-    const countries = [
-        { name: "United States", flag: "🇺🇸", color: "#1E3A8A" },
-        { name: "India", flag: "🇮🇳", color: "#FF9933" },
-        { name: "France", flag: "🇫🇷", color: "#002654" },
-        { name: "Japan", flag: "🇯🇵", color: "#BC002D" },
-        { name: "South Korea", flag: "🇰🇷", color: "#003478" },
-        { name: "United Kingdom", flag: "🇬🇧", color: "#012169" },
-        { name: "Germany", flag: "🇩🇪", color: "#000000" },
-        { name: "Italy", flag: "🇮🇹", color: "#008C45" },
-        { name: "Spain", flag: "🇪🇸", color: "#C60B1E" },
-        { name: "Brazil", flag: "🇧🇷", color: "#009739" },
-        { name: "Mexico", flag: "🇲🇽", color: "#006847" },
-        { name: "Australia", flag: "🇦🇺", color: "#012169" },
-        { name: "Canada", flag: "🇨🇦", color: "#FF0000" },
-        { name: "Russia", flag: "🇷🇺", color: "#D52B1E" },
-        { name: "China", flag: "🇨🇳", color: "#DE2910" },
-        { name: "Nigeria", flag: "🇳🇬", color: "#008751" },
-        { name: "Egypt", flag: "🇪🇬", color: "#CE1126" },
-        { name: "Turkey", flag: "🇹🇷", color: "#E30A17" },
-        { name: "Iran", flag: "🇮🇷", color: "#DA0000" },
-        { name: "Indonesia", flag: "🇮🇩", color: "#FF0000" },
-        { name: "Sweden", flag: "🇸🇪", color: "#006AA7" },
-        { name: "Denmark", flag: "🇩🇰", color: "#C60C30" },
-        { name: "Norway", flag: "🇳🇴", color: "#EF2B2D" },
-        { name: "Poland", flag: "🇵🇱", color: "#DC143C" },
-        { name: "Argentina", flag: "🇦🇷", color: "#74ACDF" }
-    ];
+// Data: All 195 countries
+const countries = [
+    "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
+    "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+    "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
+    "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+    "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
+    "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+    "Cameroon", "Canada", "Central African Republic", "Chad", "Chile",
+    "China", "Colombia", "Comoros", "Congo", "Costa Rica",
+    "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+    "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
+    "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia",
+    "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
+    "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+    "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
+    "Guyana", "Haiti", "Honduras", "Hungary", "Iceland",
+    "India", "Indonesia", "Iran", "Iraq", "Ireland",
+    "Israel", "Italy", "Jamaica", "Japan", "Jordan",
+    "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan",
+    "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
+    "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar",
+    "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+    "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
+    "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco",
+    "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal",
+    "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria",
+    "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
+    "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay",
+    "Peru", "Philippines", "Poland", "Portugal", "Qatar",
+    "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
+    "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
+    "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
+    "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
+    "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan",
+    "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
+    "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo",
+    "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
+    "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+    "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
+    "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
 
-    // Movie genres with colors for wheel
-    const genres = [
-        { name: "Action", color: "#E63946", icon: "fa-explosion" },
-        { name: "Adventure", color: "#1D3557", icon: "fa-mountain" },
-        { name: "Animation", color: "#457B9D", icon: "fa-film" },
-        { name: "Comedy", color: "#F4A261", icon: "fa-face-laugh" },
-        { name: "Drama", color: "#2A9D8F", icon: "fa-masks-theater" },
-        { name: "Fantasy", color: "#9D4EDD", icon: "fa-wand-sparkles" },
-        { name: "Horror", color: "#390099", icon: "fa-ghost" },
-        { name: "Mystery", color: "#6A4C93", icon: "fa-magnifying-glass" },
-        { name: "Romance", color: "#E76F51", icon: "fa-heart" },
-        { name: "Sci-Fi", color: "#118AB2", icon: "fa-robot" },
-        { name: "Thriller", color: "#073B4C", icon: "fa-heart-pulse" },
-        { name: "Documentary", color: "#06D6A0", icon: "fa-camera" }
-    ];
+// Data: Movie Genres
+const genres = [
+    "Action", "Adventure", "Animation", "Biography", "Comedy",
+    "Crime", "Documentary", "Drama", "Family", "Fantasy",
+    "Film-Noir", "History", "Horror", "Music", "Musical",
+    "Mystery", "Romance", "Sci-Fi", "Sport", "Thriller",
+    "War", "Western", "Superhero", "Psychological"
+];
 
-    // DOM Elements
-    const countryWheel = document.getElementById('countryWheel');
-    const genreWheel = document.getElementById('genreWheel');
-    const spinCountryBtn = document.getElementById('spinCountryBtn');
-    const spinGenreBtn = document.getElementById('spinGenreBtn');
-    const countryResult = document.getElementById('countryResult');
-    const genreResult = document.getElementById('genreResult');
-    const selectedCountry = document.getElementById('selectedCountry');
-    const selectedGenre = document.getElementById('selectedGenre');
-    const countryFlag = document.getElementById('countryFlag');
-    const nextToGenreBtn = document.getElementById('nextToGenreBtn');
-    const showSearchBtn = document.getElementById('showSearchBtn');
-    const restartBtn = document.getElementById('restartBtn');
+// DOM Elements
+const countryWheelCanvas = document.getElementById('countryWheel');
+const genreWheelCanvas = document.getElementById('genreWheel');
+const spinCountryBtn = document.getElementById('spinCountryBtn');
+const spinGenreBtn = document.getElementById('spinGenreBtn');
+const spinBothBtn = document.getElementById('spinBothBtn');
+const searchMoviesBtn = document.getElementById('searchMoviesBtn');
+const countryResult = document.getElementById('countryResult');
+const genreResult = document.getElementById('genreResult');
+const selectedCountry = document.getElementById('selectedCountry');
+const selectedGenre = document.getElementById('selectedGenre');
+const searchInfo = document.getElementById('searchInfo');
+
+// Selected values
+let currentCountry = null;
+let currentGenre = null;
+
+// Colors for wheels
+const countryColors = [
+    '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2',
+    '#EF476F', '#7B68EE', '#FFA500', '#32CD32', '#1E90FF',
+    '#8A2BE2', '#FF69B4', '#00CED1', '#FF8C00', '#9ACD32'
+];
+
+const genreColors = [
+    '#E74C3C', '#3498DB', '#2ECC71', '#F39C12', '#9B59B6',
+    '#1ABC9C', '#D35400', '#34495E', '#16A085', '#8E44AD',
+    '#2C3E50', '#27AE60', '#2980B9', '#F1C40F', '#E67E22'
+];
+
+// Initialize Wheels
+function initWheel(canvas, items, colors, type) {
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 20;
+    const sliceAngle = (2 * Math.PI) / items.length;
     
-    // Search elements
-    const displayCountry = document.getElementById('displayCountry');
-    const displayGenre = document.getElementById('displayGenre');
-    const searchQuery = document.getElementById('searchQuery');
-    const searchQueryText = document.getElementById('searchQueryText');
-    const googleSearchBtn = document.getElementById('googleSearchBtn');
+    return { ctx, centerX, centerY, radius, sliceAngle };
+}
+
+// Draw Wheel
+function drawWheel(canvas, items, colors, rotation = 0, selectedIndex = -1) {
+    const { ctx, centerX, centerY, radius, sliceAngle } = initWheel(canvas, items, colors);
     
-    // Step sections
-    const countryStep = document.getElementById('countryStep');
-    const genreStep = document.getElementById('genreStep');
-    const searchStep = document.getElementById('searchStep');
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // State variables
-    let currentCountry = null;
-    let currentGenre = null;
-    let isSpinning = false;
-
-    // Initialize the application
-    function init() {
-        createCountryWheel();
-        createGenreWheel();
-        setupEventListeners();
+    // Draw each slice
+    for (let i = 0; i < items.length; i++) {
+        const startAngle = i * sliceAngle + rotation;
+        const endAngle = (i + 1) * sliceAngle + rotation;
         
-        // Auto-spin country wheel on page load after a short delay
-        setTimeout(() => {
-            spinCountryBtn.click();
-        }, 1000);
-    }
-
-    // Create the country wheel with segments
-    function createCountryWheel() {
-        countryWheel.innerHTML = '';
-        const totalCountries = countries.length;
-        const angle = 360 / totalCountries;
+        // Draw slice
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
         
-        for (let i = 0; i < totalCountries; i++) {
-            const segment = document.createElement('div');
-            segment.className = 'wheel-segment';
-            segment.style.transform = `rotate(${i * angle}deg)`;
-            segment.style.backgroundColor = countries[i].color;
-            
-            // Create gradient effect for each segment
-            segment.style.backgroundImage = `linear-gradient(to bottom right, ${countries[i].color}, ${darkenColor(countries[i].color, 20)})`;
-            
-            const span = document.createElement('span');
-            // Only show country name when wheel stops (initially empty)
-            span.textContent = '';
-            span.id = `country-segment-${i}`;
-            segment.appendChild(span);
-            
-            countryWheel.appendChild(segment);
-        }
-    }
-
-    // Create the genre wheel with segments
-    function createGenreWheel() {
-        genreWheel.innerHTML = '';
-        const totalGenres = genres.length;
-        const angle = 360 / totalGenres;
+        // Set color (highlight selected slice)
+        ctx.fillStyle = selectedIndex === i ? '#FFD700' : colors[i % colors.length];
+        ctx.fill();
         
-        for (let i = 0; i < totalGenres; i++) {
-            const segment = document.createElement('div');
-            segment.className = 'wheel-segment';
-            segment.style.transform = `rotate(${i * angle}deg)`;
-            segment.style.backgroundColor = genres[i].color;
-            
-            // Create gradient effect for each segment
-            segment.style.backgroundImage = `linear-gradient(to bottom right, ${genres[i].color}, ${darkenColor(genres[i].color, 20)})`;
-            
-            const span = document.createElement('span');
-            // Only show genre name when wheel stops (initially empty)
-            span.textContent = '';
-            span.id = `genre-segment-${i}`;
-            segment.appendChild(span);
-            
-            genreWheel.appendChild(segment);
-        }
-    }
-
-    // Helper function to darken a color
-    function darkenColor(color, percent) {
-        let r = parseInt(color.substring(1, 3), 16);
-        let g = parseInt(color.substring(3, 5), 16);
-        let b = parseInt(color.substring(5, 7), 16);
-
-        r = Math.floor(r * (100 - percent) / 100);
-        g = Math.floor(g * (100 - percent) / 100);
-        b = Math.floor(b * (100 - percent) / 100);
-
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    }
-
-    // Spin the wheel and get a random item
-    function spinWheel(wheel, items, resultCallback, isCountry = true) {
-        if (isSpinning) return;
+        // Draw border
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.stroke();
         
-        isSpinning = true;
+        // Draw text
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = selectedIndex === i ? '#000' : 'white';
+        ctx.font = 'bold 12px Poppins';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 3;
         
-        // Disable spin buttons during spinning
-        spinCountryBtn.disabled = true;
-        if (spinGenreBtn) spinGenreBtn.disabled = true;
-        
-        // Hide any previous results
-        if (isCountry) {
-            countryResult.classList.add('hidden');
-        } else {
-            genreResult.classList.add('hidden');
+        // Shorten long names
+        let text = items[i];
+        if (text.length > 12) {
+            text = text.substring(0, 10) + '..';
         }
         
-        // Clear wheel segment text during spin
-        const segments = wheel.querySelectorAll('.wheel-segment span');
-        segments.forEach(segment => {
-            segment.textContent = '';
-        });
+        ctx.fillText(text, radius - 25, 4);
+        ctx.restore();
+    }
+    
+    // Draw center circle
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+    ctx.fillStyle = '#2c3e50';
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // Draw icon in center
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 16px FontAwesome';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(canvas.id === 'countryWheel' ? '🌍' : '🎬', centerX, centerY);
+}
+
+// Spin Animation
+function spinWheel(canvas, items, colors, resultElement, valueSetter, duration = 3000) {
+    return new Promise((resolve) => {
+        const spinBtn = canvas.id === 'countryWheel' ? spinCountryBtn : spinGenreBtn;
+        spinBtn.disabled = true;
         
-        // Randomly select an item
-        const totalItems = items.length;
-        const selectedIndex = Math.floor(Math.random() * totalItems);
+        // Generate random rotation (3-5 full rotations + random offset)
+        const fullRotations = 3 + Math.floor(Math.random() * 3);
+        const extraRotation = Math.random() * 2 * Math.PI;
+        const totalRotation = fullRotations * 2 * Math.PI + extraRotation;
         
-        // Calculate rotation (multiple full rotations plus offset)
-        const fullRotations = 5;
-        const segmentAngle = 360 / totalItems;
-        const rotation = 360 * fullRotations + (360 - (selectedIndex * segmentAngle)) + (Math.random() * segmentAngle);
+        // Animation parameters
+        const startTime = Date.now();
+        const startRotation = 0;
+        const sliceAngle = (2 * Math.PI) / items.length;
         
-        // Apply spinning animation
-        wheel.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.3, 1)';
-        wheel.style.transform = `rotate(${rotation}deg)`;
+        // Show spinning message
+        resultElement.innerHTML = `
+            <div class="spinning-message">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Spinning...</p>
+            </div>
+        `;
         
-        // After spinning, show the result
-        setTimeout(() => {
-            // Show the selected item on the wheel segment
-            if (isCountry) {
-                document.getElementById(`country-segment-${selectedIndex}`).textContent = countries[selectedIndex].name;
+        // Animation loop
+        function animate() {
+            const currentTime = Date.now();
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function for smooth deceleration
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            
+            // Calculate current rotation
+            const currentRotation = startRotation + totalRotation * easeOut;
+            
+            // Draw wheel with current rotation
+            drawWheel(canvas, items, colors, currentRotation);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
             } else {
-                document.getElementById(`genre-segment-${selectedIndex}`).textContent = genres[selectedIndex].name;
+                // Animation finished
+                finishSpin();
             }
+        }
+        
+        function finishSpin() {
+            // Calculate selected item
+            const finalRotation = totalRotation % (2 * Math.PI);
+            const pointerAngle = Math.PI; // Bottom position
+            const effectiveAngle = (pointerAngle - finalRotation + (2 * Math.PI)) % (2 * Math.PI);
+            const selectedIndex = Math.floor(effectiveAngle / sliceAngle);
+            const selectedItem = items[selectedIndex];
             
-            // Call the result callback with selected item
-            resultCallback(items[selectedIndex]);
+            // Update display
+            resultElement.innerHTML = `
+                <div class="selected-result">
+                    <h3>${selectedItem}</h3>
+                    <p>${canvas.id === 'countryWheel' ? '🎌 Country Selected' : '🎬 Genre Selected'}</p>
+                </div>
+            `;
             
-            // Re-enable spin buttons
-            isSpinning = false;
-            spinCountryBtn.disabled = false;
-            if (spinGenreBtn) spinGenreBtn.disabled = false;
-        }, 4000);
-    }
-
-    // Handle country selection
-    function handleCountrySelected(country) {
-        currentCountry = country;
-        
-        // Update UI with selected country
-        selectedCountry.textContent = country.name;
-        countryFlag.textContent = country.flag;
-        
-        // Show result
-        setTimeout(() => {
-            countryResult.classList.remove('hidden');
-            // Scroll to result smoothly
-            countryResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 500);
-    }
-
-    // Handle genre selection
-    function handleGenreSelected(genre) {
-        currentGenre = genre;
-        
-        // Update UI with selected genre
-        selectedGenre.textContent = genre.name;
-        
-        // Show result
-        setTimeout(() => {
-            genreResult.classList.remove('hidden');
-            // Scroll to result smoothly
-            genreResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 500);
-    }
-
-    // Show search step with Google search button
-    function showSearchStep() {
-        // Update the search step with current selections
-        displayCountry.textContent = currentCountry.name;
-        displayGenre.textContent = currentGenre.name;
-        
-        // Create the search query
-        const searchQueryTextValue = `${currentCountry.name} ${currentGenre.name} movies`;
-        searchQuery.textContent = searchQueryTextValue;
-        searchQueryText.textContent = searchQueryTextValue;
-        
-        // Set the Google search URL
-        const encodedQuery = encodeURIComponent(searchQueryTextValue);
-        googleSearchBtn.href = `https://www.google.com/search?q=${encodedQuery}`;
-        
-        // Switch to search step
-        switchStep('searchStep');
-        
-        // Scroll to top of search section
-        setTimeout(() => {
-            searchStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
-    }
-
-    // Switch between steps
-    function switchStep(stepId) {
-        // Hide all steps
-        countryStep.classList.remove('active');
-        genreStep.classList.remove('active');
-        searchStep.classList.remove('active');
-        
-        // Show selected step
-        document.getElementById(stepId).classList.add('active');
-    }
-
-    // Restart the process
-    function restartProcess() {
-        // Reset wheels to initial position
-        countryWheel.style.transition = 'none';
-        countryWheel.style.transform = 'rotate(0deg)';
-        genreWheel.style.transition = 'none';
-        genreWheel.style.transform = 'rotate(0deg)';
-        
-        // Clear wheel segment text
-        const countrySegments = countryWheel.querySelectorAll('.wheel-segment span');
-        const genreSegments = genreWheel.querySelectorAll('.wheel-segment span');
-        
-        countrySegments.forEach(segment => segment.textContent = '');
-        genreSegments.forEach(segment => segment.textContent = '');
-        
-        // Reset results
-        countryResult.classList.add('hidden');
-        genreResult.classList.add('hidden');
-        
-        // Reset state
-        currentCountry = null;
-        currentGenre = null;
-        
-        // Switch back to country step
-        switchStep('countryStep');
-        
-        // Scroll to top
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 300);
-        
-        // Auto-spin country wheel after a short delay
-        setTimeout(() => {
-            spinCountryBtn.click();
-        }, 500);
-    }
-
-    // Set up event listeners
-    function setupEventListeners() {
-        // Spin country wheel
-        spinCountryBtn.addEventListener('click', () => {
-            spinWheel(countryWheel, countries, handleCountrySelected, true);
-        });
-        
-        // Next to genre step
-        nextToGenreBtn.addEventListener('click', () => {
-            switchStep('genreStep');
+            // Highlight selected slice
+            drawWheel(canvas, items, colors, finalRotation, selectedIndex);
             
-            // Scroll to top of genre section
-            setTimeout(() => {
-                genreStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300);
-        });
+            // Set value
+            valueSetter(selectedItem);
+            
+            // Re-enable button
+            spinBtn.disabled = false;
+            
+            // Celebrate
+            resultElement.classList.add('celebrate');
+            setTimeout(() => resultElement.classList.remove('celebrate'), 500);
+            
+            // Resolve promise
+            resolve(selectedItem);
+        }
         
-        // Spin genre wheel
-        spinGenreBtn.addEventListener('click', () => {
-            spinWheel(genreWheel, genres, handleGenreSelected, false);
-        });
-        
-        // Show search step
-        showSearchBtn.addEventListener('click', () => {
-            showSearchStep();
-        });
-        
-        // Restart process
-        restartBtn.addEventListener('click', () => {
-            restartProcess();
-        });
-    }
+        // Start animation
+        requestAnimationFrame(animate);
+    });
+}
 
-    // Initialize the app
-    init();
+// Set selected country
+function setSelectedCountry(country) {
+    currentCountry = country;
+    selectedCountry.textContent = country;
+    selectedCountry.style.color = '#e74c3c';
+    updateSearchButton();
+}
+
+// Set selected genre
+function setSelectedGenre(genre) {
+    currentGenre = genre;
+    selectedGenre.textContent = genre;
+    selectedGenre.style.color = '#3498db';
+    updateSearchButton();
+}
+
+// Update search button state
+function updateSearchButton() {
+    if (currentCountry && currentGenre) {
+        searchMoviesBtn.disabled = false;
+        searchInfo.innerHTML = `
+            <p><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Ready to search for <strong>${currentGenre}</strong> movies from <strong>${currentCountry}</strong></p>
+        `;
+    } else {
+        searchMoviesBtn.disabled = true;
+    }
+}
+
+// Google Search Function
+function searchGoogleMovies(country, genre) {
+    // Create search query
+    const query = `${genre} movies from ${country} 2023 2024`;
+    const encodedQuery = encodeURIComponent(query);
+    const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
+    
+    // Open in new tab
+    window.open(googleUrl, '_blank');
+}
+
+// Event Listeners
+spinCountryBtn.addEventListener('click', () => {
+    spinWheel(countryWheelCanvas, countries, countryColors, countryResult, setSelectedCountry, 4000);
+});
+
+spinGenreBtn.addEventListener('click', () => {
+    spinWheel(genreWheelCanvas, genres, genreColors, genreResult, setSelectedGenre, 4000);
+});
+
+spinBothBtn.addEventListener('click', async () => {
+    // Disable all buttons
+    spinCountryBtn.disabled = true;
+    spinGenreBtn.disabled = true;
+    spinBothBtn.disabled = true;
+    
+    // Spin both wheels sequentially
+    await spinWheel(countryWheelCanvas, countries, countryColors, countryResult, setSelectedCountry, 4000);
+    await spinWheel(genreWheelCanvas, genres, genreColors, genreResult, setSelectedGenre, 4000);
+    
+    // Re-enable buttons
+    spinCountryBtn.disabled = false;
+    spinGenreBtn.disabled = false;
+    spinBothBtn.disabled = false;
+});
+
+searchMoviesBtn.addEventListener('click', () => {
+    if (currentCountry && currentGenre) {
+        searchGoogleMovies(currentCountry, currentGenre);
+        
+        // Show search initiated message
+        searchInfo.innerHTML = `
+            <p><i class="fas fa-external-link-alt"></i> Opening Google search for <strong>${currentGenre}</strong> movies from <strong>${currentCountry}</strong>...</p>
+        `;
+    }
+});
+
+// Initialize wheels on load
+window.addEventListener('load', () => {
+    drawWheel(countryWheelCanvas, countries, countryColors);
+    drawWheel(genreWheelCanvas, genres, genreColors);
+    
+    // Add CSS for spinning message
+    const style = document.createElement('style');
+    style.textContent = `
+        .spinning-message {
+            text-align: center;
+            color: #667eea;
+        }
+        .spinning-message i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .selected-result {
+            text-align: center;
+        }
+        .selected-result h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .selected-result p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    console.log('Movie Explorer Wheel initialized!');
+    console.log(`Countries: ${countries.length}, Genres: ${genres.length}`);
 });
