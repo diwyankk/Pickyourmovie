@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -38,7 +37,9 @@
                         <p class="wheel-subtitle">195 Countries • Spin for Movie Origin</p>
                     </div>
                     <div class="wheel-wrapper">
-                        <canvas id="countryWheel"></canvas>
+                        <div class="wheel" id="countryWheel">
+                            <div class="wheel-inner" id="countryWheelInner"></div>
+                        </div>
                         <div class="spin-center">
                             <button id="spinCountryBtn" class="spin-btn">
                                 <i class="fas fa-play"></i> SPIN COUNTRY
@@ -63,7 +64,9 @@
                         <p class="wheel-subtitle">24 Genres • Spin for Movie Type</p>
                     </div>
                     <div class="wheel-wrapper">
-                        <canvas id="genreWheel"></canvas>
+                        <div class="wheel" id="genreWheel">
+                            <div class="wheel-inner" id="genreWheelInner"></div>
+                        </div>
                         <div class="spin-center">
                             <button id="spinGenreBtn" class="spin-btn">
                                 <i class="fas fa-play"></i> SPIN GENRE
