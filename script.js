@@ -8,7 +8,7 @@ const countries = [
     "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
     "Cameroon", "Canada", "Central African Republic", "Chad", "Chile",
     "China", "Colombia", "Comoros", "Congo", "Costa Rica",
-    "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+    "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czechia",
     "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
     "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia",
     "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
@@ -63,9 +63,11 @@ const selectedCountry = document.getElementById('selectedCountry');
 const selectedGenre = document.getElementById('selectedGenre');
 const searchInfo = document.getElementById('searchInfo');
 
-// Selected values
-let currentCountry = null;
-let currentGenre = null;
+// Wheel variables
+let countryChart = null;
+let genreChart = null;
+let isCountrySpinning = false;
+let isGenreSpinning = false;
 
 // Colors for wheels
 const countryColors = [
@@ -80,108 +82,218 @@ const genreColors = [
     '#2C3E50', '#27AE60', '#2980B9', '#F1C40F', '#E67E22'
 ];
 
-// Initialize Wheels
-function initWheel(canvas, items, colors, type) {
-    const ctx = canvas.getContext('2d');
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const radius = Math.min(centerX, centerY) - 20;
-    const sliceAngle = (2 * Math.PI) / items.length;
+// Initialize both wheels
+function initializeWheels() {
+    // Country wheel setup
+    const countryCtx = countryWheelCanvas.getContext('2d');
+    countryWheelCanvas.width = 400;
+    countryWheelCanvas.height = 400;
     
-    return { ctx, centerX, centerY, radius, sliceAngle };
+    // Genre wheel setup
+    const genreCtx = genreWheelCanvas.getContext('2d');
+    genreWheelCanvas.width = 400;
+    genreWheelCanvas.height = 400;
+    
+    // Create charts using Chart.js
+    countryChart = new Chart(countryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: countries,
+            datasets: [{
+                data: Array(countries.length).fill(1),
+                backgroundColor: getColors(countries.length, countryColors),
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: false,
+            animation: {
+                duration: 0
+            },
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return countries[context.dataIndex];
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    genreChart = new Chart(genreCtx, {
+        type: 'doughnut',
+        data: {
+            labels: genres,
+            datasets: [{
+                data: Array(genres.length).fill(1),
+                backgroundColor: getColors(genres.length, genreColors),
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: false,
+            animation: {
+                duration: 0
+            },
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return genres[context.dataIndex];
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    drawCountryLabels();
+    drawGenreLabels();
 }
 
-// Draw Wheel
-function drawWheel(canvas, items, colors, rotation = 0, selectedIndex = -1) {
-    const { ctx, centerX, centerY, radius, sliceAngle } = initWheel(canvas, items, colors);
+// Helper function to generate colors
+function getColors(count, colorArray) {
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+        colors.push(colorArray[i % colorArray.length]);
+    }
+    return colors;
+}
+
+// Draw country labels manually
+function drawCountryLabels() {
+    const ctx = countryWheelCanvas.getContext('2d');
+    const centerX = countryWheelCanvas.width / 2;
+    const centerY = countryWheelCanvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 60;
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, countryWheelCanvas.width, countryWheelCanvas.height);
     
-    // Draw each slice
-    for (let i = 0; i < items.length; i++) {
-        const startAngle = i * sliceAngle + rotation;
-        const endAngle = (i + 1) * sliceAngle + rotation;
+    // Draw country names around the wheel
+    const total = countries.length;
+    const angleStep = (2 * Math.PI) / total;
+    
+    for (let i = 0; i < total; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
         
-        // Draw slice
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        ctx.closePath();
-        
-        // Set color (highlight selected slice)
-        ctx.fillStyle = selectedIndex === i ? '#FFD700' : colors[i % colors.length];
-        ctx.fill();
-        
-        // Draw border
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        // Draw text
         ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(startAngle + sliceAngle / 2);
-        ctx.textAlign = 'right';
-        ctx.fillStyle = selectedIndex === i ? '#000' : 'white';
-        ctx.font = 'bold 12px Poppins';
+        ctx.translate(x, y);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 10px Poppins';
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
-        ctx.shadowBlur = 3;
+        ctx.shadowBlur = 2;
         
-        // Shorten long names
-        let text = items[i];
-        if (text.length > 12) {
-            text = text.substring(0, 10) + '..';
+        // Shorten long country names
+        let countryName = countries[i];
+        if (countryName.length > 12) {
+            countryName = countryName.substring(0, 10) + '..';
         }
         
-        ctx.fillText(text, radius - 25, 4);
+        ctx.fillText(countryName, 0, 0);
         ctx.restore();
     }
-    
-    // Draw center circle
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-    ctx.fillStyle = '#2c3e50';
-    ctx.fill();
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    
-    // Draw icon in center
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 16px FontAwesome';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(canvas.id === 'countryWheel' ? '🌍' : '🎬', centerX, centerY);
 }
 
-// Spin Animation
-function spinWheel(canvas, items, colors, resultElement, valueSetter, duration = 3000) {
+// Draw genre labels manually
+function drawGenreLabels() {
+    const ctx = genreWheelCanvas.getContext('2d');
+    const centerX = genreWheelCanvas.width / 2;
+    const centerY = genreWheelCanvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 60;
+    
+    ctx.clearRect(0, 0, genreWheelCanvas.width, genreWheelCanvas.height);
+    
+    // Draw genre names around the wheel
+    const total = genres.length;
+    const angleStep = (2 * Math.PI) / total;
+    
+    for (let i = 0; i < total; i++) {
+        const angle = i * angleStep - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Poppins';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 2;
+        
+        ctx.fillText(genres[i], 0, 0);
+        ctx.restore();
+    }
+}
+
+// Spin wheel function
+function spinWheel(type, duration = 4000) {
     return new Promise((resolve) => {
-        const spinBtn = canvas.id === 'countryWheel' ? spinCountryBtn : spinGenreBtn;
-        spinBtn.disabled = true;
+        let chart, resultElement, items, setResultFunction;
+        let isSpinning = false;
         
-        // Generate random rotation (3-5 full rotations + random offset)
-        const fullRotations = 3 + Math.floor(Math.random() * 3);
-        const extraRotation = Math.random() * 2 * Math.PI;
-        const totalRotation = fullRotations * 2 * Math.PI + extraRotation;
+        if (type === 'country') {
+            chart = countryChart;
+            resultElement = countryResult;
+            items = countries;
+            setResultFunction = setSelectedCountry;
+            isCountrySpinning = true;
+            isSpinning = isCountrySpinning;
+        } else {
+            chart = genreChart;
+            resultElement = genreResult;
+            items = genres;
+            setResultFunction = setSelectedGenre;
+            isGenreSpinning = true;
+            isSpinning = isGenreSpinning;
+        }
         
-        // Animation parameters
-        const startTime = Date.now();
-        const startRotation = 0;
-        const sliceAngle = (2 * Math.PI) / items.length;
+        // Disable button
+        if (type === 'country') {
+            spinCountryBtn.disabled = true;
+        } else {
+            spinGenreBtn.disabled = true;
+        }
         
         // Show spinning message
         resultElement.innerHTML = `
             <div class="spinning-message">
-                <i class="fas fa-spinner fa-spin"></i>
+                <i class="fas fa-spinner fa-spin spinning"></i>
                 <p>Spinning...</p>
             </div>
         `;
         
-        // Animation loop
-        function animate() {
-            const currentTime = Date.now();
+        // Generate random rotation (3-5 full rotations + random offset)
+        const fullRotations = 3 + Math.floor(Math.random() * 3);
+        const extraRotation = Math.random() * 360;
+        const totalRotation = fullRotations * 360 + extraRotation;
+        
+        // Get random index for selection
+        const selectedIndex = Math.floor(Math.random() * items.length);
+        const selectedItem = items[selectedIndex];
+        
+        // Animate the rotation
+        let startTime = null;
+        let startRotation = chart.options.rotation || 0;
+        
+        function animate(currentTime) {
+            if (!startTime) startTime = currentTime;
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
@@ -191,8 +303,9 @@ function spinWheel(canvas, items, colors, resultElement, valueSetter, duration =
             // Calculate current rotation
             const currentRotation = startRotation + totalRotation * easeOut;
             
-            // Draw wheel with current rotation
-            drawWheel(canvas, items, colors, currentRotation);
+            // Update chart rotation
+            chart.options.rotation = currentRotation % 360;
+            chart.update();
             
             if (progress < 1) {
                 requestAnimationFrame(animate);
@@ -203,33 +316,31 @@ function spinWheel(canvas, items, colors, resultElement, valueSetter, duration =
         }
         
         function finishSpin() {
-            // Calculate selected item
-            const finalRotation = totalRotation % (2 * Math.PI);
-            const pointerAngle = Math.PI; // Bottom position
-            const effectiveAngle = (pointerAngle - finalRotation + (2 * Math.PI)) % (2 * Math.PI);
-            const selectedIndex = Math.floor(effectiveAngle / sliceAngle);
-            const selectedItem = items[selectedIndex];
-            
-            // Update display
+            // Update display with selected item
             resultElement.innerHTML = `
                 <div class="selected-result">
                     <h3>${selectedItem}</h3>
-                    <p>${canvas.id === 'countryWheel' ? '🎌 Country Selected' : '🎬 Genre Selected'}</p>
+                    <p>${type === 'country' ? '🎌 Country Selected' : '🎬 Genre Selected'}</p>
                 </div>
             `;
             
-            // Highlight selected slice
-            drawWheel(canvas, items, colors, finalRotation, selectedIndex);
-            
-            // Set value
-            valueSetter(selectedItem);
+            // Set the selected value
+            setResultFunction(selectedItem);
             
             // Re-enable button
-            spinBtn.disabled = false;
+            if (type === 'country') {
+                spinCountryBtn.disabled = false;
+                isCountrySpinning = false;
+            } else {
+                spinGenreBtn.disabled = false;
+                isGenreSpinning = false;
+            }
             
-            // Celebrate
+            // Celebrate animation
             resultElement.classList.add('celebrate');
-            setTimeout(() => resultElement.classList.remove('celebrate'), 500);
+            setTimeout(() => {
+                resultElement.classList.remove('celebrate');
+            }, 500);
             
             // Resolve promise
             resolve(selectedItem);
@@ -271,54 +382,59 @@ function updateSearchButton() {
 // Google Search Function
 function searchGoogleMovies(country, genre) {
     // Create search query
-    const query = `${genre} movies from ${country} 2023 2024`;
+    const query = `${genre} movies from ${country} 2023 2024 best films`;
     const encodedQuery = encodeURIComponent(query);
     const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
     
     // Open in new tab
     window.open(googleUrl, '_blank');
+    
+    // Show search initiated message
+    searchInfo.innerHTML = `
+        <p><i class="fas fa-external-link-alt"></i> Opening Google search for <strong>${genre}</strong> movies from <strong>${country}</strong>...</p>
+    `;
 }
 
 // Event Listeners
 spinCountryBtn.addEventListener('click', () => {
-    spinWheel(countryWheelCanvas, countries, countryColors, countryResult, setSelectedCountry, 4000);
+    if (!isCountrySpinning) {
+        spinWheel('country', 4000);
+    }
 });
 
 spinGenreBtn.addEventListener('click', () => {
-    spinWheel(genreWheelCanvas, genres, genreColors, genreResult, setSelectedGenre, 4000);
+    if (!isGenreSpinning) {
+        spinWheel('genre', 4000);
+    }
 });
 
 spinBothBtn.addEventListener('click', async () => {
-    // Disable all buttons
-    spinCountryBtn.disabled = true;
-    spinGenreBtn.disabled = true;
-    spinBothBtn.disabled = true;
-    
-    // Spin both wheels sequentially
-    await spinWheel(countryWheelCanvas, countries, countryColors, countryResult, setSelectedCountry, 4000);
-    await spinWheel(genreWheelCanvas, genres, genreColors, genreResult, setSelectedGenre, 4000);
-    
-    // Re-enable buttons
-    spinCountryBtn.disabled = false;
-    spinGenreBtn.disabled = false;
-    spinBothBtn.disabled = false;
+    if (!isCountrySpinning && !isGenreSpinning) {
+        // Disable all spin buttons
+        spinCountryBtn.disabled = true;
+        spinGenreBtn.disabled = true;
+        spinBothBtn.disabled = true;
+        
+        // Spin both wheels
+        await Promise.all([
+            spinWheel('country', 4000),
+            spinWheel('genre', 4000)
+        ]);
+        
+        // Re-enable spin both button
+        spinBothBtn.disabled = false;
+    }
 });
 
 searchMoviesBtn.addEventListener('click', () => {
     if (currentCountry && currentGenre) {
         searchGoogleMovies(currentCountry, currentGenre);
-        
-        // Show search initiated message
-        searchInfo.innerHTML = `
-            <p><i class="fas fa-external-link-alt"></i> Opening Google search for <strong>${currentGenre}</strong> movies from <strong>${currentCountry}</strong>...</p>
-        `;
     }
 });
 
-// Initialize wheels on load
+// Initialize when page loads
 window.addEventListener('load', () => {
-    drawWheel(countryWheelCanvas, countries, countryColors);
-    drawWheel(genreWheelCanvas, genres, genreColors);
+    initializeWheels();
     
     // Add CSS for spinning message
     const style = document.createElement('style');
@@ -330,6 +446,7 @@ window.addEventListener('load', () => {
         .spinning-message i {
             font-size: 2rem;
             margin-bottom: 10px;
+            display: block;
         }
         .selected-result {
             text-align: center;
@@ -348,4 +465,16 @@ window.addEventListener('load', () => {
     
     console.log('Movie Explorer Wheel initialized!');
     console.log(`Countries: ${countries.length}, Genres: ${genres.length}`);
+});
+
+// Make responsive on window resize
+window.addEventListener('resize', () => {
+    // Re-initialize wheels to adjust to new size
+    if (countryChart) {
+        countryChart.destroy();
+    }
+    if (genreChart) {
+        genreChart.destroy();
+    }
+    initializeWheels();
 });
