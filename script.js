@@ -45,124 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         { name: "Documentary", color: "#06D6A0", icon: "fa-camera" }
     ];
 
-    // Movie database
-    const movieDatabase = {
-        "United States": {
-            "Action": { 
-                title: "The Dark Knight", 
-                year: "2008", 
-                rating: "9.0/10", 
-                description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice."
-            },
-            "Drama": { 
-                title: "The Shawshank Redemption", 
-                year: "1994", 
-                rating: "9.3/10", 
-                description: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
-            },
-            "Sci-Fi": { 
-                title: "Inception", 
-                year: "2010", 
-                rating: "8.8/10", 
-                description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O."
-            },
-            "Comedy": { 
-                title: "The Grand Budapest Hotel", 
-                year: "2014", 
-                rating: "8.1/10", 
-                description: "A writer encounters the owner of an aging high-class hotel, who tells him of his early years serving as a lobby boy in the hotel's glorious years under an exceptional concierge."
-            }
-        },
-        "India": {
-            "Drama": { 
-                title: "3 Idiots", 
-                year: "2009", 
-                rating: "8.4/10", 
-                description: "Two friends are searching for their long lost companion. They revisit their college days and recall the memories of their friend who inspired them to think differently, even as the rest of the world called them 'idiots'."
-            },
-            "Action": { 
-                title: "Baahubali: The Beginning", 
-                year: "2015", 
-                rating: "8.0/10", 
-                description: "In ancient India, an adventurous and daring man becomes involved in a decades-old feud between two warring peoples."
-            },
-            "Romance": { 
-                title: "Dilwale Dulhania Le Jayenge", 
-                year: "1995", 
-                rating: "8.1/10", 
-                description: "When Raj meets Simran in Europe, it isn't love at first sight but when Simran moves to India for an arranged marriage, love makes its presence felt."
-            }
-        },
-        "Japan": {
-            "Animation": { 
-                title: "Spirited Away", 
-                year: "2001", 
-                rating: "8.6/10", 
-                description: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts."
-            },
-            "Drama": { 
-                title: "Seven Samurai", 
-                year: "1954", 
-                rating: "8.6/10", 
-                description: "Farmers from a village exploited by bandits hire a veteran samurai for protection, who gathers six other samurai to join him."
-            },
-            "Action": { 
-                title: "Kill Bill: Vol. 1", 
-                year: "2003", 
-                rating: "8.2/10", 
-                description: "After awakening from a four-year coma, a former assassin wreaks vengeance on the team of assassins who betrayed her."
-            }
-        },
-        "France": {
-            "Drama": { 
-                title: "Amélie", 
-                year: "2001", 
-                rating: "8.3/10", 
-                description: "Amélie is an innocent and naive girl in Paris with her own sense of justice. She decides to help those around her and, along the way, discovers love."
-            },
-            "Romance": { 
-                title: "Blue Is the Warmest Colour", 
-                year: "2013", 
-                rating: "7.7/10", 
-                description: "Adèle's life is changed when she meets Emma, a young woman with blue hair, who will allow her to discover desire and to assert herself as a woman and as an adult."
-            },
-            "Comedy": { 
-                title: "The Intouchables", 
-                year: "2011", 
-                rating: "8.5/10", 
-                description: "After he becomes a quadriplegic from a paragliding accident, an aristocrat hires a young man from the projects to be his caregiver."
-            }
-        }
-    };
-
-    // Fallback movies if country/genre combination not found
-    const fallbackMovies = [
-        { 
-            title: "Parasite", 
-            country: "South Korea", 
-            genre: "Thriller", 
-            year: "2019", 
-            rating: "8.6/10", 
-            description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan."
-        },
-        { 
-            title: "City of God", 
-            country: "Brazil", 
-            genre: "Crime", 
-            year: "2002", 
-            rating: "8.6/10", 
-            description: "In the slums of Rio, two kids' paths diverge as one struggles to become a photographer and the other a kingpin."
-        },
-        { 
-            title: "Life Is Beautiful", 
-            country: "Italy", 
-            genre: "Drama", 
-            year: "1997", 
-            rating: "8.6/10", 
-            description: "When an open-minded Jewish librarian and his son become victims of the Holocaust, he uses a perfect mixture of will, humor, and imagination to protect his son from the dangers around their camp."
-        }
-    ];
-
     // DOM Elements
     const countryWheel = document.getElementById('countryWheel');
     const genreWheel = document.getElementById('genreWheel');
@@ -174,33 +56,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedGenre = document.getElementById('selectedGenre');
     const countryFlag = document.getElementById('countryFlag');
     const nextToGenreBtn = document.getElementById('nextToGenreBtn');
-    const showMovieBtn = document.getElementById('showMovieBtn');
+    const showSearchBtn = document.getElementById('showSearchBtn');
     const restartBtn = document.getElementById('restartBtn');
     
-    // Movie elements
-    const movieTitle = document.getElementById('movieTitle');
-    const movieCountry = document.getElementById('movieCountry');
-    const movieGenre = document.getElementById('movieGenre');
-    const movieYear = document.getElementById('movieYear');
-    const movieRating = document.getElementById('movieRating');
-    const movieDescription = document.getElementById('movieDescription');
+    // Search elements
+    const displayCountry = document.getElementById('displayCountry');
+    const displayGenre = document.getElementById('displayGenre');
+    const searchQuery = document.getElementById('searchQuery');
+    const searchQueryText = document.getElementById('searchQueryText');
+    const googleSearchBtn = document.getElementById('googleSearchBtn');
     
     // Step sections
     const countryStep = document.getElementById('countryStep');
     const genreStep = document.getElementById('genreStep');
-    const movieStep = document.getElementById('movieStep');
+    const searchStep = document.getElementById('searchStep');
     
     // State variables
     let currentCountry = null;
     let currentGenre = null;
     let isSpinning = false;
-    let usedCombinations = [];
 
     // Initialize the application
     function init() {
         createCountryWheel();
         createGenreWheel();
         setupEventListeners();
+        
+        // Auto-spin country wheel on page load after a short delay
+        setTimeout(() => {
+            spinCountryBtn.click();
+        }, 1000);
     }
 
     // Create the country wheel with segments
@@ -352,46 +237,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 
-    // Show movie recommendation
-    function showMovieRecommendation() {
-        // Find movie based on country and genre
-        let movie = null;
+    // Show search step with Google search button
+    function showSearchStep() {
+        // Update the search step with current selections
+        displayCountry.textContent = currentCountry.name;
+        displayGenre.textContent = currentGenre.name;
         
-        if (movieDatabase[currentCountry.name] && movieDatabase[currentCountry.name][currentGenre.name]) {
-            movie = movieDatabase[currentCountry.name][currentGenre.name];
-        } else {
-            // Use a fallback movie
-            const randomIndex = Math.floor(Math.random() * fallbackMovies.length);
-            movie = fallbackMovies[randomIndex];
-            // Update current selection to match fallback
-            currentCountry = { name: movie.country, flag: getFlagForCountry(movie.country) };
-            currentGenre = { name: movie.genre };
-        }
+        // Create the search query
+        const searchQueryTextValue = `${currentCountry.name} ${currentGenre.name} movies`;
+        searchQuery.textContent = searchQueryTextValue;
+        searchQueryText.textContent = searchQueryTextValue;
         
-        // Update movie details in UI
-        movieTitle.textContent = movie.title;
-        movieCountry.textContent = currentCountry.name;
-        movieGenre.textContent = currentGenre.name;
-        movieYear.textContent = movie.year;
-        movieRating.textContent = movie.rating;
-        movieDescription.textContent = movie.description;
+        // Set the Google search URL
+        const encodedQuery = encodeURIComponent(searchQueryTextValue);
+        googleSearchBtn.href = `https://www.google.com/search?q=${encodedQuery}`;
         
-        // Track this combination to avoid repeats
-        usedCombinations.push(`${currentCountry.name}-${currentGenre.name}`);
+        // Switch to search step
+        switchStep('searchStep');
         
-        // Switch to movie step
-        switchStep('movieStep');
-        
-        // Scroll to top of movie section
+        // Scroll to top of search section
         setTimeout(() => {
-            movieStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            searchStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 300);
-    }
-
-    // Helper function to get flag for a country
-    function getFlagForCountry(countryName) {
-        const country = countries.find(c => c.name === countryName);
-        return country ? country.flag : "🇺🇸";
     }
 
     // Switch between steps
@@ -399,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hide all steps
         countryStep.classList.remove('active');
         genreStep.classList.remove('active');
-        movieStep.classList.remove('active');
+        searchStep.classList.remove('active');
         
         // Show selected step
         document.getElementById(stepId).classList.add('active');
@@ -435,6 +302,11 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 300);
+        
+        // Auto-spin country wheel after a short delay
+        setTimeout(() => {
+            spinCountryBtn.click();
+        }, 500);
     }
 
     // Set up event listeners
@@ -459,20 +331,15 @@ document.addEventListener('DOMContentLoaded', function() {
             spinWheel(genreWheel, genres, handleGenreSelected, false);
         });
         
-        // Show movie recommendation
-        showMovieBtn.addEventListener('click', () => {
-            showMovieRecommendation();
+        // Show search step
+        showSearchBtn.addEventListener('click', () => {
+            showSearchStep();
         });
         
         // Restart process
         restartBtn.addEventListener('click', () => {
             restartProcess();
         });
-        
-        // Auto-spin country wheel on page load after a short delay
-        setTimeout(() => {
-            spinCountryBtn.click();
-        }, 1000);
     }
 
     // Initialize the app
